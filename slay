@@ -207,6 +207,15 @@ if [ -e $cwd/swag/npm ]; then
 	done
 fi
 
+###############################################################################
+# OPTIONAL: flutter
+###############################################################################
+chapter "Installing flutter…"
+git clone https://github.com/flutter/flutter.git
+mv flutter $HOME/
+echo "export PATH=$HOME/flutter/bin:$PATH " >> ~/.bash_profile
+source ~/.bash_profile
+flutter doctor
 
 ###############################################################################
 # OPTIONAL: Customizations
