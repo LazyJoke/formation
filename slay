@@ -149,6 +149,9 @@ fi
 # UPDATE: Homebrew
 ###############################################################################
 chapter "Updating Homebrew formulae…"
+if ! [ -x "$(command -v brew)" ]; then
+	git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
+fi
 brew update
 
 ###############################################################################
