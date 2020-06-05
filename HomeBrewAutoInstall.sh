@@ -32,7 +32,7 @@ else
   GROUP="$(id -gn)"
   TOUCH="/bin/touch"
 fi
-BREW_REPO="https://mirrors.ustc.edu.cn/brew"
+BREW_REPO="https://mirrors.ustc.edu.cn/brew.git"
 
 # TODO: bump version when new macOS is released
 MACOS_LATEST_SUPPORTED="10.15"
