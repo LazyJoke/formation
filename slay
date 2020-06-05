@@ -121,7 +121,7 @@ fi
 # -----------------------------------------------------------------------------
 if ! [ -x "$(command -v brew)" ]; then
 	step "Installing Homebrew…"
-	curl -fsS 'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
+	/bin/bash HomeBrewAutoInstall.sh
 	export PATH="/usr/local/bin:$PATH"
 	print_success "Homebrew installed!"
 else
@@ -132,6 +132,23 @@ if brew list | grep -Fq brew-cask; then
 	step "Uninstalling old Homebrew-Cask…"
 	brew uninstall --force brew-cask
 	print_success "Homebrew-Cask uninstalled!"
+fi
+
+# 以下是将默认源替换为国内 USTC 源的方法:
+if [ -x "$(command -v brew)" ]; then
+	# 替换核心软件仓库
+	cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
+	git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
+	# 替换 cask 软件仓库（提供 macOS 应用和大型二进制文件）
+	cd "$(brew --repo)"/Library/Taps/caskroom/homebrew-cask
+	git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
+	# 替换 Bottles 源（Homebrew 预编译二进制软件包）
+	# bash（默认 shell）用户：
+	echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles' >> ~/.bash_profile
+	source ~/.bash_profile
+	# zsh 用户：
+	echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles' >> ~/.zshrc
+	source ~/.zshrc
 fi
 
 ###############################################################################
@@ -149,10 +166,11 @@ fi
 # UPDATE: Homebrew
 ###############################################################################
 chapter "Updating Homebrew formulae…"
-if ! [ -x "$(command -v brew)" ]; then
+if [ -x "$(command -v brew)" ]; then
 	git clone git://mirrors.ustc.edu.cn/homebrew-core.git/ /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core --depth=1
+	brew update
+	brew doctor
 fi
-brew update
 
 ###############################################################################
 # INSTALL: casks
@@ -213,12 +231,16 @@ fi
 ###############################################################################
 # OPTIONAL: flutter
 ###############################################################################
-chapter "Installing flutter…"
-git clone https://github.com/flutter/flutter.git
-mv flutter $HOME/
-echo "export PATH=$HOME/flutter/bin:$PATH " >> ~/.bash_profile
-source ~/.bash_profile
-flutter doctor
+if ! [ -x "$(command -v flutter)" ]; then
+	chapter "Installing flutter…"
+	git clone https://github.com/flutter/flutter.git
+	mv flutter $HOME/
+	echo "export PATH=$HOME/flutter/bin:$PATH " >> ~/.bash_profile
+	source ~/.bash_profile
+	echo "export PATH=$HOME/flutter/bin:$PATH " >> ~/.zshrc
+	source ~/.zshrc
+	flutter doctor
+fi
 
 ###############################################################################
 # OPTIONAL: Customizations
