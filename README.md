@@ -8,5 +8,6 @@ git clone https://github.com/LazyJoke/formation.git && cd formation
 
 ./slay 2>&1 | tee ~/slay.log
 
-# 成功后重启终端
+# 成功后重启终端,
+source ~/.bash_profile && source ~/.zshrc
 ```
