@@ -190,6 +190,12 @@ chapter "Uninstalling oh-my-zsh…"
 echo y | sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/uninstall.sh)" "" --unattended
 chapter "Installing oh-my-zsh…"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+chapter "Installing oh-my-zsh plugins…"
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH/custom/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH/custom/plugins/zsh-autosuggestions
+sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+sed -i -e 's/# DISABLE_AUTO_UPDATE/DISABLE_AUTO_UPDATE/' ~/.zshrc
 
 ###############################################################################
 # OPTIONAL: flutter
@@ -199,14 +205,10 @@ if ! [ -x "$(command -v flutter)" ]; then
 	git clone https://github.com/flutter/flutter.git
 	mv flutter $HOME/
 	echo "export PATH=$HOME/flutter/bin:$PATH " >> ~/.bash_profile
-	source ~/.bash_profile
 	echo "export PATH=$HOME/flutter/bin:$PATH " >> ~/.zshrc
-	source ~/.zshrc
-	flutter doctor
 fi
 
 ###############################################################################
 # 🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋🍋
 ###############################################################################
 e_lemon_ated
-exec zsh
