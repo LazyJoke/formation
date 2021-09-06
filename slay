@@ -184,6 +184,16 @@ if [ -e $cwd/swag/npm ]; then
 fi
 
 ###############################################################################
+# OPTIONAL: oh-my-zsh
+###############################################################################
+chapter "Installing oh-my-zsh…"
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+sed -i -e 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+source ~/.zshrc
+
+###############################################################################
 # OPTIONAL: flutter
 ###############################################################################
 if ! [ -x "$(command -v flutter)" ]; then
